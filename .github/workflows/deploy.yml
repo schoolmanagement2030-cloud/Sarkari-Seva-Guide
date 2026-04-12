@@ -9,11 +9,11 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -22,25 +22,25 @@ jobs:
           node-version: 18
           cache: npm
 
-      # 🔥 CLEAN + SAFE INSTALL (fixes oxide / optional deps issue)
-      - name: Install dependencies (clean fix)
+      # 🔥 FINAL FIX (rollup + tailwind + npm optional bug)
+      - name: Clean Install Dependencies
         run: |
           rm -rf node_modules package-lock.json
           npm cache clean --force
-          npm install --no-optional
+          npm install --include=optional
 
       # 🏗 Build project
-      - name: Build project
+      - name: Build Project
         run: npm run build
 
-      # 📦 Upload build (Vite default = dist)
+      # 📦 Upload dist folder
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    needs: build-and-deploy
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
