@@ -1,4 +1,4 @@
-name: Deploy Website
+name: Deploy
 
 on:
   push:
@@ -19,14 +19,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
 
-      - name: Install dependencies
+      - name: Install
         run: npm install
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
-      - name: Upload build
+      - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
