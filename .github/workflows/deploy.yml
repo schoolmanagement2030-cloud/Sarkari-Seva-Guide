@@ -13,26 +13,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
 
-      - name: Clean install (fix bug)
+      # 🔥 CLEAN + SAFE INSTALL (fixes oxide / optional deps issue)
+      - name: Install dependencies (clean fix)
         run: |
           rm -rf node_modules package-lock.json
-          npm install
+          npm cache clean --force
+          npm install --no-optional
 
-      - name: Build
+      # 🏗 Build project
+      - name: Build project
         run: npm run build
 
-      - name: Upload dist
+      # 📦 Upload build (Vite default = dist)
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
-      - name: Deploy
-        uses: actions/deploy-pages@v5
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
