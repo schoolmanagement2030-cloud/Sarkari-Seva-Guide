@@ -22,19 +22,18 @@ jobs:
           node-version: 18
           cache: npm
 
-      # 🔥 REAL FIX (oxide + rollup + npm bug)
-      - name: Clean install (FULL FIX)
-        run: |
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
-          npm install --no-optional --legacy-peer-deps
+      # ✅ REAL FIX (NO npm install tricks)
+      - name: Install dependencies (stable method)
+        run: npm ci
 
-      # 🏗 Build
-      - name: Build
+      # 🔥 FORCE rebuild rollup native deps
+      - name: Fix rollup native
+        run: npm rebuild rollup
+
+      - name: Build project
         run: npm run build
 
-      # 📦 Upload
-      - name: Upload
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
