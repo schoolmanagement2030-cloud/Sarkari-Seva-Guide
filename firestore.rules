@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function for admin check
+    function isAdmin() {
+      return request.auth != null && (request.auth.token.admin == true || request.auth.token.email == "vinas23metro2@gmail.com");
+    }
+
+    // Helper for visit validation
+    function isValidVisit(data) {
+      return data.keys().hasAll(['visitorId', 'timestamp', 'deviceType']) &&
+             data.visitorId is string && data.visitorId.size() > 0 && data.visitorId.size() < 100 &&
+             data.deviceType in ['mobile', 'desktop'] &&
+             data.timestamp == request.time;
+    }
+
+    // Visits collection rules
+    match /visits/{visitId} {
+      // Allow public to create a visit record for tracking
+      allow create: if isValidVisit(request.resource.data);
+      // Only admins can read, update or delete visit data
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Schemes collection rules
+    match /schemes/{schemeId} {
+      allow read: if true;
+      allow write: if false; // Fully autonomous via backend Admin SDK
+    }
+
+    // Jobs collection rules
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow write: if false; // Fully autonomous via backend Admin SDK
+    }
+
+    // Default rules for all other collections
+    match /{document=**} {
+      // Deny all public access, allow ONLY authenticated admins
+      allow read, write: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "Scheme": {
+      "title": "Scheme",
+      "description": "A government scheme or news item",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the scheme" },
+        "description": { "type": "string", "description": "Short description" },
+        "link": { "type": "string", "description": "Original source link" },
+        "category": { "type": "string", "description": "Category (e.g., Central, State, Jobs)" },
+        "state": { "type": "string", "description": "State name if applicable" },
+        "publishedAt": { "type": "string", "format": "date-time", "description": "Date of publication" },
+        "source": { "type": "string", "description": "Source name (e.g., PIB)" }
+      },
+      "required": ["title", "link", "publishedAt"]
+    },
+    "Visit": {
+      "title": "Visit",
+      "description": "A record of a user visit",
+      "type": "object",
+      "properties": {
+        "visitorId": { "type": "string", "description": "Unique ID for the visitor" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "Time of visit" },
+        "deviceType": { "type": "string", "description": "mobile or desktop" },
+        "browser": { "type": "string", "description": "Browser name" }
+      },
+      "required": ["visitorId", "timestamp", "deviceType"]
+    },
+    "Job": {
+      "title": "Job",
+      "description": "A government or private job listing",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "companyName": { "type": "string", "description": "Name of the hiring company or department" },
+        "location": { "type": "string", "description": "Job location (city, state, or Remote)" },
+        "eligibility": { "type": "string" },
+        "lastDate": { "type": "string" },
+        "link": { "type": "string" },
+        "type": { "type": "string", "enum": ["Government", "Private"] },
+        "publishedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "link", "publishedAt"]
+    },
+    "Log": {
+      "title": "Log",
+      "description": "Admin action log",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "details": { "type": "string" }
+      },
+      "required": ["action", "timestamp"]
+    },
+    "PendingContent": {
+      "title": "Pending Content",
+      "description": "Content waiting for admin approval",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "link": { "type": "string" },
+        "type": { "type": "string", "enum": ["Scheme", "Job"] },
+        "aiConfidence": { "type": "number" },
+        "aiReasoning": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "companyName": { "type": "string" },
+        "location": { "type": "string" }
+      }
+    },
+    "ContactMessage": {
+      "title": "Contact Message",
+      "description": "User feedback or correction requests",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/schemes/{schemeId}": {
+      "schema": "Scheme",
+      "description": "Collection of government schemes"
+    },
+    "/jobs/{jobId}": {
+      "schema": "Job",
+      "description": "Collection of job listings"
+    },
+    "/visits/{visitId}": {
+      "schema": "Visit",
+      "description": "Collection of user visits"
+    },
+    "/logs/{logId}": {
+      "schema": "Log",
+      "description": "Admin activity logs"
+    },
+    "/pending_content/{contentId}": {
+      "schema": "PendingContent",
+      "description": "Content awaiting verification"
+    },
+    "/contact_messages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "User feedback and correction requests"
+    }
+  }
+}
