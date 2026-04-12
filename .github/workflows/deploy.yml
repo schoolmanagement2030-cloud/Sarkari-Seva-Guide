@@ -13,28 +13,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      # 🔥 FINAL FIX (rollup + tailwind + npm optional bug)
-      - name: Clean Install Dependencies
+      # 🔥 REAL FIX (oxide + rollup + npm bug)
+      - name: Clean install (FULL FIX)
         run: |
           rm -rf node_modules package-lock.json
           npm cache clean --force
-          npm install --include=optional
+          npm install --no-optional --legacy-peer-deps
 
-      # 🏗 Build project
-      - name: Build Project
+      # 🏗 Build
+      - name: Build
         run: npm run build
 
-      # 📦 Upload dist folder
-      - name: Upload artifact
+      # 📦 Upload
+      - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -44,5 +44,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: actions/deploy-pages@v4
