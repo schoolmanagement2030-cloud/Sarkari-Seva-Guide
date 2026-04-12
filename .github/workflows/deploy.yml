@@ -21,16 +21,18 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
+      - name: Clean install (fix bug)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
       - name: Upload dist
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist   # 🔥 सबसे जरूरी
+          path: ./dist
 
       - name: Deploy
         uses: actions/deploy-pages@v5
