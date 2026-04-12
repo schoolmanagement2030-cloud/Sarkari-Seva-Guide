@@ -9,11 +9,11 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
 
-    // 🔥 IMPORTANT FIX (GitHub Pages ke liye)
-    base: '/REPO-NAME/',   // 👈 yahan apna repo naam daal
+    // 🔥 GitHub Pages FIX
+    base: '/Sarkari-Seva-Guide/',
 
     define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || ""),
     },
 
     resolve: {
@@ -23,7 +23,6 @@ export default defineConfig(({ mode }) => {
     },
 
     server: {
-      // HMR disabled logic same rakha
       hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
