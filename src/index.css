@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans Devanagari", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans;
+    overflow-x: hidden;
+  }
+
+  /* Prevent Hindi text from being cut off or overlapping */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .text-xl { font-size: 1.125rem; }
+  .text-2xl { font-size: 1.25rem; }
+  .p-5 { padding: 1rem; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.markdown-body strong {
+  @apply font-bold text-blue-900 block mt-2;
+}
+
+.markdown-body p {
+  @apply mb-1;
+}
