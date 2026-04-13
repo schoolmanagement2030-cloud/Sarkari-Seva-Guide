@@ -5,8 +5,13 @@ on:
     branches: ["main"]
 
 permissions:
+  contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -14,26 +19,27 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4   # ✅ updated
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v4   # ✅ updated
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: "npm"
 
-      - name: Clean install
-        run: |
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
-          npm install
+      - name: Install dependencies
+        run: npm install
 
       - name: Build
         run: npm run build
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3   # ✅ FIXED
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4   # ✅ updated
+        uses: actions/deploy-pages@v4
