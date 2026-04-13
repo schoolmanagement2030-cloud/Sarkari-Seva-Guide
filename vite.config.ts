@@ -1,13 +1,12 @@
-import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, '.', '');
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react()],
 
     base: '/Sarkari-Seva-Guide/',
 
@@ -17,17 +16,8 @@ export default defineConfig(({ mode }) => {
 
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './'),
+        '@': path.resolve(__dirname, '.'),
       },
-    },
-
-    server: {
-      hmr: true,
-    },
-
-    build: {
-      outDir: 'dist',
-      sourcemap: false,
     },
   };
 });
