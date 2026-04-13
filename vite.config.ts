@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
 
-    // ✅ GitHub Pages base path
     base: '/Sarkari-Seva-Guide/',
 
     define: {
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
     },
 
     server: {
-      hmr: true, // disable mat kar abhi
+      hmr: true,
     },
 
     build: {
