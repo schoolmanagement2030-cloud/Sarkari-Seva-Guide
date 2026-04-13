@@ -4,12 +4,12 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '');
+  const env = loadEnv(mode, process.cwd(), '');
 
   return {
     plugins: [react(), tailwindcss()],
 
-    // 🔥 GitHub Pages FIX
+    // ✅ GitHub Pages base path
     base: '/Sarkari-Seva-Guide/',
 
     define: {
@@ -18,12 +18,17 @@ export default defineConfig(({ mode }) => {
 
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(__dirname, './'),
       },
     },
 
     server: {
-      hmr: process.env.DISABLE_HMR !== 'true',
+      hmr: true, // disable mat kar abhi
+    },
+
+    build: {
+      outDir: 'dist',
+      sourcemap: false,
     },
   };
 });
