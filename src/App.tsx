@@ -6,7 +6,7 @@ import { collection, query, orderBy, onSnapshot, limit, addDoc, serverTimestamp,
 import { getSchemeGuidance, enhanceSchemeWithAI, analyzeAndExtract } from './lib/gemini';
 import { cn } from './lib/utils';
 import Markdown from 'react-markdown';
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Link, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 // --- Interfaces ---
