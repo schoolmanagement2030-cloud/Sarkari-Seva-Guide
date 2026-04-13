@@ -17,6 +17,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages   # ✅ YE LINE ADD KARNA HAI
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
