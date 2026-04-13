@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Website
 
 on:
   push:
@@ -9,32 +9,31 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
 
-      - name: Install
-        run: npm install
+      - name: Clean install (fix npm bug)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
 
       - name: Build
         run: npm run build
 
-      - name: Upload
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v2
         with:
-          path: dist
+          path: ./dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy
+        uses: actions/deploy-pages@v2
